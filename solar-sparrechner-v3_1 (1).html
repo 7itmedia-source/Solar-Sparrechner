@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Sparrechner – Jetzt kostenlos berechnen</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23F5A623'/><circle cx='50' cy='50' r='35' fill='%23FFF3D6'/><circle cx='50' cy='50' r='25' fill='%23F5A623'/><circle cx='50' cy='50' r='15' fill='%23FFF3D6'/></svg>">
+<meta property="og:title" content="Solar Sparrechner – Jetzt kostenlos berechnen">
+<meta property="og:description" content="Berechnen Sie in 2 Minuten, wie viel Sie mit einer Solaranlage sparen können. Unverbindlich & kostenlos.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://via.placeholder.com/1200x630/F5A623/1A2E44?text=Solar+Sparrechner">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
+  :root {
+    --sun: #F5A623;
+    --sun-light: #FFF3D6;
+    --sky: #1A2E44;
+    --sky-mid: #2C4A6E;
+    --leaf: #2D7A4F;
+    --leaf-light: #E8F5EE;
+    --white: #FFFFFF;
+    --fog: #F7F8FA;
+    --border: #E2E6EA;
+    --text: #1A2E44;
+    --muted: #6B7C93;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,46,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #0f1e30 0%, #1e3a5a 60%, #1a4a2e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 24px;
+    max-width: 560px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sky-mid) 100%);
+    padding: 36px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '☀️';
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-size: 120px;
+    opacity: 0.08;
+    line-height: 1;
+  }
+  .header-label {
+    display: inline-block;
+    background: var(--sun);
+    color: var(--sky);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Steps ── */
+  .steps-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-tab {
+    flex: 1;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .step-tab.active {
+    color: var(--sky);
+    border-bottom-color: var(--sun);
+    font-weight: 600;
+  }
+  .step-tab.done {
+    color: var(--leaf);
+  }
+
+  /* ── Form body ── */
+  .form-body {
+    padding: 36px 40px;
+  }
+
+  .step-panel { display: none; }
+  .step-panel.active { 
+    display: block;
+    animation: fadeIn 0.25s ease-in;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .field {
+    margin-bottom: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sky);
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+  .field .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, var(--sun) var(--pct, 0%), var(--border) var(--pct, 0%));
+    border-radius: 100px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--sun);
+    border: 3px solid var(--white);
+    box-shadow: 0 2px 8px rgba(245,166,35,0.5);
+    cursor: pointer;
+  }
+  .range-value {
+    display: inline-block;
+    background: var(--sun-light);
+    color: var(--sky);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  /* 4-option toggle groups use 2x2 grid layout */
+  .btn-group[data-cols="4"] {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn-toggle {
+    flex: 1;
+    min-width: 90px;
+    padding: 12px 10px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .btn-toggle:hover { border-color: var(--sun); color: var(--sky); }
+  .btn-toggle.selected {
+    background: var(--sun-light);
+    border-color: var(--sun);
+    color: var(--sky);
+    font-weight: 600;
+  }
+
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+    background: var(--fog);
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-color: var(--sun);
+    background: var(--white);
+  }
+
+  .cta {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--sun) 0%, #e8920f 100%);
+    color: var(--sky);
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(245,166,35,0.4);
+  }
+  .cta:active { transform: translateY(0); }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+  .back-link:hover { color: var(--sky); }
+
+  /* ── Result panel ── */
+  #result-panel {
+    padding: 36px 40px;
+    display: none;
+  }
+  .result-hero {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--sky-mid) 100%);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .result-hero .label {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .result-hero .big-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--sun);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .result-hero .sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .result-card {
+    background: var(--fog);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .result-card .rc-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--leaf);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .result-card .rc-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 40px;
+    border-top: 1px solid var(--border);
+    background: var(--fog);
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .trust-item .icon { font-size: 15px; }
+
+  /* ── Result CTA wrapper ── */
+  .result-cta-wrap {
+    margin: 0 40px 32px;
+    width: calc(100% - 80px);
+  }
+
+  /* ── Mobile breakpoint ── */
+  @media (max-width: 480px) {
+    .form-body, .header, #result-panel {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <span class="header-label">Energielösung Deutschland · Kostenloser Sparrechner</span>
+    <h1>Wie viel könnten Sie mit einer Solaranlage sparen?</h1>
+    <p>In 2 Minuten zu Ihrer persönlichen Ersparnis – unverbindlich & kostenlos.</p>
+  </div>
+
+  <div class="steps-bar">
+    <div class="step-tab active" id="tab-1">1 · Verbrauch</div>
+    <div class="step-tab" id="tab-2">2 · Haus</div>
+    <div class="step-tab" id="tab-3">3 · Kontakt</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="form-body">
+    <div class="step-panel active" id="step-1">
+      <div class="field">
+        <label>Wie hoch ist Ihre monatliche Stromrechnung?</label>
+        <div class="range-value" id="stromVal">120 €/Monat</div>
+        <input type="range" id="strom" min="50" max="500" step="10" value="120"
+          oninput="document.getElementById('stromVal').textContent = this.value + ' €/Monat'; updateStromHint(this.value); checkStromMin(this.value)">
+        <p class="hint" id="stromHint">Entspricht ca. 2.400 kWh/Jahr – typisch für 1–2 Personen.</p>
+      </div>
+      <div class="field">
+        <label>Wer lebt in Ihrem Haushalt?</label>
+        <div class="btn-group" id="persons">
+          <button class="btn-toggle" onclick="selectToggle('persons', this)">1 Person</button>
+          <button class="btn-toggle selected" onclick="selectToggle('persons', this)">2–3 Personen</button>
+          <button class="btn-toggle" onclick="selectToggle('persons', this)">4+ Personen</button>
+        </div>
+      </div>
+      <button class="cta" onclick="goStep(2)">Weiter &rarr;</button>
+      <p id="stromWarning" style="display:none; color:#e8920f; font-size:12px; margin-top:8px; text-align:center;">
+        Sind Sie sicher? €50/Monat entspricht sehr geringem Verbrauch.
+      </p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel" id="step-2">
+      <div class="field">
+        <label>Wie ist Ihr Dach ausgerichtet?</label>
+        <div class="btn-group" id="dach" data-cols="4">
+          <button class="btn-toggle selected" onclick="selectToggle('dach', this)">Süd</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Ost/West</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Nord</button>
+          <button class="btn-toggle" onclick="selectToggle('dach', this)">Weiß ich nicht</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Wie groß ist Ihre Dachfläche ungefähr?</label>
+        <div class="range-value" id="dachVal">60 m²</div>
+        <input type="range" id="dachflaeche" min="20" max="200" step="5" value="60"
+          oninput="document.getElementById('dachVal').textContent = this.value + ' m²'; updateDachHint(this.value)">
+        <p class="hint" id="dachHint">Platz für ca. 26 Module → ~12,3 kWp</p>
+      </div>
+      <div class="field">
+        <label>Haben Sie Interesse an einem Batteriespeicher?</label>
+        <div class="btn-group" id="speicher">
+          <button class="btn-toggle selected" onclick="selectToggle('speicher', this)">Ja, gerne</button>
+          <button class="btn-toggle" onclick="selectToggle('speicher', this)">Vielleicht</button>
+          <button class="btn-toggle" onclick="selectToggle('speicher', this)">Nein</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Wie heizen Sie aktuell?</label>
+        <div class="btn-group" id="heizung" data-cols="4">
+          <button class="btn-toggle selected" onclick="selectToggle('heizung', this)">Wärmepumpe</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Öl/Gas</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Fernwärme</button>
+          <button class="btn-toggle" onclick="selectToggle('heizung', this)">Sonstiges</button>
+        </div>
+        <p class="hint">Wärmepumpen-Haushalte profitieren besonders von hoher Eigenverbrauchsquote.</p>
+      </div>
+      <div class="field">
+        <label>Wann nutzen Sie hauptsächlich Strom?</label>
+        <div class="btn-group" id="stromnutzung">
+          <button class="btn-toggle selected" onclick="selectToggle('stromnutzung', this)">Morgens und Abends</button>
+          <button class="btn-toggle" onclick="selectToggle('stromnutzung', this)">Verteilt über den Tag</button>
+          <button class="btn-toggle" onclick="selectToggle('stromnutzung', this)">Anderes</button>
+        </div>
+        <p class="hint">Wer tagsüber zuhause ist, kann mehr Solarstrom direkt verbrauchen.</p>
+      </div>
+      <button class="cta" onclick="goStep(3)">Weiter &rarr;</button>
+      <button class="back-link" onclick="goStep(1)">&larr; Zurück</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-panel" id="step-3">
+      <p style="font-size:14px; color:var(--muted); margin-bottom:24px; line-height:1.6;">
+        Ihre Auswertung ist fertig — tragen Sie Ihre Daten ein, um das vollständige Ergebnis mit Förderdetails zu sehen.
+      </p>
+      <div style="background:var(--fog); padding:16px; border-radius:12px; text-align:center; margin-bottom:24px;">
+        <span style="font-size:24px; font-weight:600; color:var(--sky); letter-spacing:2px; filter:blur(4px);">████ €/Jahr</span>
+      </div>
+      <div class="field">
+        <label>Ihr Name</label>
+        <input type="text" id="fname" placeholder="z. B. Maria Müller">
+      </div>
+      <div class="field">
+        <label>Postleitzahl</label>
+        <input type="text" id="fplz" inputmode="numeric" maxlength="5" placeholder="z. B. 80331">
+      </div>
+      <div class="field">
+        <label>Telefonnummer</label>
+        <input type="tel" id="fphone" placeholder="+49 ...">
+        <p class="hint">Wir rufen Sie für Ihre kostenlose Erstberatung an.</p>
+      </div>
+      <div class="field">
+        <label>E-Mail-Adresse <span style="color:var(--muted); font-weight:400">(optional)</span></label>
+        <input type="email" id="femail" placeholder="ihre@email.de">
+        <p class="hint">Wir senden Ihnen die Auswertung als PDF.</p>
+      </div>
+      <div class="field">
+        <label style="display:flex; align-items:flex-start; gap:8px;">
+          <input type="checkbox" id="fdsgvo" style="width:auto; margin-top:2px;">
+          <span style="font-size:13px; font-weight:400; color:var(--text);">
+            Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#datenschutz" style="color:var(--sky);">Datenschutzerklärung</a> zu und bin einverstanden, dass Energielösung Deutschland mich kontaktiert.
+          </span>
+        </label>
+      </div>
+      <button class="cta" id="submitBtn" onclick="showResult()" disabled>Meine Ersparnis berechnen</button>
+      <button class="back-link" onclick="goStep(2)">&larr; Zurück</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-panel">
+    <div class="result-hero">
+      <div class="label">Ihre geschätzte jährliche Ersparnis</div>
+      <div class="big-number" id="res-saving">–</div>
+      <div class="sub">pro Jahr bei aktuellen Strompreisen</div>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-card">
+        <span class="rc-value" id="res-kwp">–</span>
+        <span class="rc-label">Empfohlene Anlagengröße</span>
+      </div>
+      <div class="result-card">
+        <span class="rc-value" id="res-co2">–</span>
+        <span class="rc-label">CO₂ eingespart pro Jahr</span>
+      </div>
+      <div class="result-card">
+        <span class="rc-value" id="res-amort">–</span>
+        <span class="rc-label">Amortisationszeit</span>
+      </div>
+      <div class="result-card">
+        <span class="rc-value" id="res-foerder">–</span>
+        <span class="rc-label">Indikative Förderung</span>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      Diese Berechnung ist eine unverbindliche Schätzung auf Basis von bundesweiten Durchschnittswerten.<br>
+      Ein Berater wird sich mit Ihrer genauen Auswertung bei Ihnen melden.
+    </p>
+    <p style="font-size:13px; color:var(--sky); text-align:center; margin-bottom:20px;">
+      Ihr persönlicher Berater meldet sich innerhalb von 24 Stunden mit Ihrer detaillierten Auswertung.
+    </p>
+
+    <div class="result-cta-wrap">
+      <button class="cta"
+        onclick="this.textContent='✓ Wir melden uns in Kürze bei Ihnen!'; this.style.background='var(--leaf)'; this.style.color='white'; this.disabled=true;">
+        Kostenloses Beratungsgespräch vereinbaren
+      </button>
+    </div>
+  </div>
+
+  <div class="trust-row">
+    <div class="trust-item"><span class="icon">🔒</span> Keine Weitergabe</div>
+    <div class="trust-item"><span class="icon">🆓</span> 100% kostenlos</div>
+    <div class="trust-item"><span class="icon">🚫</span> Kein Spam</div>
+    <div style="display:flex; gap:16px; font-size:11px; color:var(--muted);">
+      <a href="#impressum" style="color:var(--muted); text-decoration:underline;">Impressum</a>
+      <a href="#datenschutz" style="color:var(--muted); text-decoration:underline;">Datenschutzerklärung</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectToggle(groupId, btn) {
+  document.querySelectorAll('#' + groupId + ' .btn-toggle')
+    .forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// Update range slider progress track
+function updateRangeProgress() {
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const val = parseFloat(slider.value) || 0;
+    const pct = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+  });
+}
+
+// Initialize on page load and on input
+document.addEventListener('DOMContentLoaded', () => {
+  updateRangeProgress();
+  // Enable submit button when DSGVO checkbox is checked
+  document.getElementById('fdsgvo').addEventListener('change', (e) => {
+    document.getElementById('submitBtn').disabled = !e.target.checked;
+  });
+});
+document.querySelectorAll('input[type="range"]').forEach(slider => {
+  slider.addEventListener('input', updateRangeProgress);
+});
+
+function goStep(n) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('step-' + i).classList.remove('active');
+    document.getElementById('tab-' + i).classList.remove('active');
+    if (i < n) document.getElementById('tab-' + i).classList.add('done');
+    else document.getElementById('tab-' + i).classList.remove('done');
+  }
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('tab-' + n).classList.add('active');
+  // Scroll to top on step transition
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Mark all steps as done when showing result
+function markAllStepsDone() {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('tab-' + i).classList.add('done');
+    document.getElementById('tab-' + i).classList.remove('active');
+  }
+}
+
+function updateStromHint(val) {
+  const strompreis = 0.37; // Strompreis 2024/25: 0.37 €/kWh
+  const kwh = Math.round(val * 12 / strompreis);
+  let desc = '';
+  if (val < 100) desc = '1 Person';
+  else if (val < 150) desc = '1–2 Personen';
+  else if (val < 220) desc = '2–3 Personen';
+  else if (val < 300) desc = '3–4 Personen';
+  else desc = 'großer Haushalt';
+  document.getElementById('stromHint').textContent =
+    'Entspricht ca. ' + kwh.toLocaleString('de-DE') + ' kWh/Jahr – typisch für ' + desc + '.';
+}
+
+function updateDachHint(val) {
+  const MODUL_WP = 475;
+  const MODUL_FLAECHE = 1.95;
+  const NUTZBARE_DACHFLAECHE = 0.85;
+  const anzahlModule = Math.max(1, Math.floor((val * NUTZBARE_DACHFLAECHE) / MODUL_FLAECHE));
+  const kwp = (anzahlModule * MODUL_WP) / 1000;
+  document.getElementById('dachHint').textContent =
+    'Platz für ca. ' + anzahlModule + ' Module → ~' + kwp.toFixed(1) + ' kWp';
+}
+
+// Count-up animation function
+function countUp(el, end, duration) {
+  const start = 0;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function for smooth animation
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (end - start) * easeOut);
+    
+    el.textContent = current.toLocaleString('de-DE') + ' €';
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// Check if electricity slider is at minimum and show warning
+function checkStromMin(val) {
+  const warning = document.getElementById('stromWarning');
+  if (val == 50) {
+    warning.style.display = 'block';
+  } else {
+    warning.style.display = 'none';
+  }
+}
+
+// ── Webhook URL – hier deine Make.com Webhook URL eintragen ──
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/DEIN_WEBHOOK_ID';
+
+
+
+// ── UTM-Parameter beim Laden der Seite lesen ──
+const UTM = (() => {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    source:   p.get('utm_source')   || '',
+    medium:   p.get('utm_medium')   || '',
+    campaign: p.get('utm_campaign') || '',
+    adset:    p.get('utm_adset')    || '',
+    ad:       p.get('utm_ad')       || '',
+  };
+})();
+
+async function showResult() {
+  // ── Validierung ──
+  const name  = document.getElementById('fname').value.trim();
+  const plz   = document.getElementById('fplz').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const email = document.getElementById('femail').value.trim();
+
+  let valid = true;
+
+  if (!name) {
+    document.getElementById('fname').style.borderColor = '#e05a5a';
+    document.getElementById('fname').focus();
+    valid = false;
+  } else {
+    document.getElementById('fname').style.borderColor = '';
+  }
+
+  // PLZ validation: exactly 5 digits, range 10000-99999
+  const plzRegex = /^\d{5}$/;
+  if (!plz || !plzRegex.test(plz) || parseInt(plz) < 10000 || parseInt(plz) > 99999) {
+    document.getElementById('fplz').style.borderColor = '#e05a5a';
+    if (valid) document.getElementById('fplz').focus();
+    valid = false;
+  } else {
+    document.getElementById('fplz').style.borderColor = '';
+  }
+
+  const digits = phone.replace(/[^0-9]/g, '');
+  const phoneRegex = /^(\+49|0)[1-9]\d{8,14}$/; // German phone format
+  if (digits.length < 10 || !phoneRegex.test(phone)) {
+    document.getElementById('fphone').style.borderColor = '#e05a5a';
+    // Add or update error message
+    let errorMsg = document.getElementById('fphone-error');
+    if (!errorMsg) {
+      errorMsg = document.createElement('p');
+      errorMsg.id = 'fphone-error';
+      errorMsg.style.color = '#e05a5a';
+      errorMsg.style.fontSize = '12px';
+      errorMsg.style.marginTop = '4px';
+      document.getElementById('fphone').parentNode.appendChild(errorMsg);
+    }
+    errorMsg.textContent = 'Bitte geben Sie eine gültige Telefonnummer ein.';
+    if (valid) document.getElementById('fphone').focus();
+    valid = false;
+  } else {
+    document.getElementById('fphone').style.borderColor = '';
+    const errorMsg = document.getElementById('fphone-error');
+    if (errorMsg) errorMsg.remove();
+  }
+
+  if (!valid) return;
+
+  // ── Berechnung ──
+  const strom = parseInt(document.getElementById('strom').value);
+  const dach  = parseInt(document.getElementById('dachflaeche').value);
+
+  const dachSelected = document.querySelector('#dach .selected')?.textContent || 'Süd';
+  const ertragProKwp = dachSelected === 'Süd'      ? 1050
+                     : dachSelected === 'Ost/West'  ? 950
+                     : dachSelected === 'Nord'      ? 750
+                     : 950;
+
+  const heizung  = document.querySelector('#heizung .selected')?.textContent      || 'Wärmepumpe';
+  const nutzung  = document.querySelector('#stromnutzung .selected')?.textContent || 'Morgens und Abends';
+  const speicher = document.querySelector('#speicher .selected')?.textContent     || 'Ja, gerne';
+  const personen = document.querySelector('#persons .selected')?.textContent      || '2–3 Personen';
+
+  const MODUL_WP          = 475;
+  const MODUL_FLAECHE     = 1.95;
+  const NUTZBARE_DACHFLAECHE = 0.85;
+  const anzahlModule = Math.max(1, Math.floor((dach * NUTZBARE_DACHFLAECHE) / MODUL_FLAECHE));
+  const kwp = Math.min(Math.round(anzahlModule * MODUL_WP) / 1000, 30);
+
+  const jahresertrag = kwp * ertragProKwp;
+
+  const strompreis         = 0.37; // Strompreis 2024/25: 0.37 €/kWh (Bundesnetzagentur Durchschnitt)
+  const einspeiseverguetung = 0.0813; // EEG Q1 2025: 0.0813 €/kWh
+  const verbrauchKwh       = (strom * 12) / strompreis;
+
+  // Personen-basierter Verbrauchsmultiplier
+  const personenMultiplier = personen === '1 Person' ? 0.85
+                            : personen === '4+ Personen' ? 1.20
+                            : 1.00;
+  const adjustedVerbrauchKwh = verbrauchKwh * personenMultiplier;
+
+  let eigenverbrauchsquote = 0.30;
+  if (speicher === 'Ja, gerne')         eigenverbrauchsquote += 0.20;
+  else if (speicher === 'Vielleicht')   eigenverbrauchsquote += 0.10;
+  if (heizung === 'Wärmepumpe')         eigenverbrauchsquote += 0.05;
+  if (nutzung === 'Verteilt über den Tag')  eigenverbrauchsquote += 0.10;
+  else if (nutzung === 'Morgens und Abends') eigenverbrauchsquote -= 0.05;
+  eigenverbrauchsquote = Math.min(Math.max(eigenverbrauchsquote, 0.20), 0.65);
+
+  const eigenverbrauchKwh = Math.min(jahresertrag * eigenverbrauchsquote, adjustedVerbrauchKwh);
+  const einspeisungKwh    = jahresertrag - eigenverbrauchKwh;
+  const saving = Math.round(eigenverbrauchKwh * strompreis + einspeisungKwh * einspeiseverguetung);
+
+  let investitionProKwp = 1450;
+  if (speicher === 'Ja, gerne')       investitionProKwp += 700;
+  else if (speicher === 'Vielleicht') investitionProKwp += 350;
+  const investition = kwp * investitionProKwp;
+  const amort  = Math.round((investition / saving) * 10) / 10;
+  const co2    = Math.round((jahresertrag * 0.380) / 100) / 10; // CO₂-Faktor 2024: 0.380 kg/kWh (Bundesnetzagentur) - Division durch 100 konvertiert zu Tonnen
+  // Indikative Förderung basierend auf Anlagengröße (kWp-basierte Schätzung)
+  let foerderText = '';
+  if (kwp <= 10) foerderText = 'ca. 2.000–5.000 €';
+  else if (kwp <= 20) foerderText = 'ca. 5.000–12.000 €';
+  else foerderText = 'ca. 12.000–20.000 €';
+
+  // ── Ergebnisse ins UI schreiben ──
+  countUp(document.getElementById('res-saving'), saving, 1200);
+  // document.getElementById('res-saving').textContent  = saving.toLocaleString('de-DE') + ' €';
+  document.getElementById('res-kwp').textContent     = kwp.toFixed(1) + ' kWp · ' + anzahlModule + ' Module';
+  document.getElementById('res-co2').textContent     = co2.toFixed(1) + ' t';
+  document.getElementById('res-amort').textContent   = amort.toFixed(1) + ' Jahre';
+  document.getElementById('res-foerder').textContent = foerderText;
+
+  markAllStepsDone();
+  document.querySelector('.form-body').style.display = 'none';
+  document.querySelector('.steps-bar').style.display = 'none';
+  document.getElementById('result-panel').style.display = 'block';
+
+  // ── Lead-Daten an Make.com schicken ──
+  const payload = {
+    // Kontaktdaten
+    name,
+    plz,
+    telefon:  phone,
+    email:    email || '',
+
+    // Formular-Inputs
+    strom_monatlich_eur: strom,
+    personen,
+    dachausrichtung:    dachSelected,
+    dachflaeche_m2:     dach,
+    speicher,
+    heizung,
+    stromnutzung:       nutzung,
+
+    // Berechnete Ergebnisse
+    ersparnis_jahr_eur: saving,
+    anlage_kwp:         parseFloat(kwp.toFixed(1)),
+    anzahl_module:      anzahlModule,
+    amortisation_jahre: amort,
+    co2_einsparung_t:   co2,
+    kfw_foerderkredit:  foerder,
+
+    // Meta Ad Tracking
+    utm_source:   UTM.source,
+    utm_medium:   UTM.medium,
+    utm_campaign: UTM.campaign,
+    utm_adset:    UTM.adset,
+    utm_ad:       UTM.ad,
+
+    // Meta
+    timestamp:  new Date().toISOString(),
+    seite:      window.location.href,
+  };
+
+  fetch(MAKE_WEBHOOK_URL, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  }).catch(err => console.error('Webhook-Fehler:', err));
+  // Kein await – UI blockiert nicht, Fehler werden still gefangen
+}
+</script>
+</body>
+</html>
