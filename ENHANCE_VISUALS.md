@@ -11,126 +11,126 @@ Use the checkboxes below to track progress as changes are applied. This document
 
 > These functional changes must be implemented first as they affect user flow and validation logic.
 
-- [x] **Navigation Lock** – Enable clicking on step tabs (1 · Verbrauch, 2 · Haus, 3 · Kontakt) but only allow navigation to completed steps. Prevent skipping forward. Users can go back to previous steps but not ahead without completion.
-- [x] **Remove Blurred Placeholder** – Delete the blurred savings preview (`████ €/Jahr`) on Step 3. Remove the entire gray box container around it.
-- [x] **Remove Phone Hint** – Delete the infotext under the Telefonnummer field: "Wir rufen Sie für Ihre kostenlose Erstberatung an."
-- [x] **Remove Email Hint** – Delete the infotext under the E-Mail field: "Wir senden Ihnen die Auswertung als PDF."
-- [x] **Loosen Phone Validation** – Relax phone number regex from strict German format to accept international formats. Allow 10-15 digits, accept +, spaces, dashes, parentheses. Remove the specific German format requirement.
-- [x] **Remove Module Count** – On the final result page, remove the module count from the "Empfohlene Anlagengröße" card. Display only the kWp value (e.g., "12.3 kWp" instead of "12.3 kWp · 26 Module").
+- [ ] **Navigation Lock** – Enable clicking on step tabs (1 · Verbrauch, 2 · Haus, 3 · Kontakt) but only allow navigation to completed steps. Prevent skipping forward. Users can go back to previous steps but not ahead without completion.
+- [ ] **Remove Blurred Placeholder** – Delete the blurred savings preview (`████ €/Jahr`) on Step 3. Remove the entire gray box container around it.
+- [ ] **Remove Phone Hint** – Delete the infotext under the Telefonnummer field: "Wir rufen Sie für Ihre kostenlose Erstberatung an."
+- [ ] **Remove Email Hint** – Delete the infotext under the E-Mail field: "Wir senden Ihnen die Auswertung als PDF."
+- [ ] **Loosen Phone Validation** – Relax phone number regex from strict German format to accept international formats. Allow 10-15 digits, accept +, spaces, dashes, parentheses. Remove the specific German format requirement.
+- [ ] **Remove Module Count** – On the final result page, remove the module count from the "Empfohlene Anlagengröße" card. Display only the kWp value (e.g., "12.3 kWp" instead of "12.3 kWp · 26 Module").
 
 ---
 
 ## Phase 2 – Header Section Enhancements
 
-- [x] **Replace Emoji Sun** – Replace the ☀️ emoji in `header::before` with a custom SVG sun icon or geometric illustration. Use a subtle, professional design.
-- [x] **Animated Header Gradient** – Add a slow, subtle color shift animation to the header background gradient (e.g., 8-10 second cycle between `var(--sky)` and `var(--sky-mid)`).
-- [x] **Enhanced Header Label** – Add a subtle glow/box-shadow effect to the header-label badge for depth.
-- [x] **Header Pattern Overlay** – Add a subtle dot or grid pattern overlay to the header background using CSS `background-image` with radial-gradient or SVG pattern.
-- [x] **Header Text Shadow** – Add a subtle text shadow to the main H1 heading for better separation from background.
+- [ ] **Replace Emoji Sun** – Replace the sun emoji in `header::before` with a custom SVG sun icon or geometric illustration. Use a subtle, professional design.
+- [ ] **Animated Header Gradient** – Add a slow, subtle color shift animation to the header background gradient (e.g., 8-10 second cycle between `var(--sky)` and `var(--sky-mid)`).
+- [ ] **Enhanced Header Label** – Add a subtle glow/box-shadow effect to the header-label badge for depth.
+- [ ] **Header Pattern Overlay** – Add a subtle dot or grid pattern overlay to the header background using CSS `background-image` with radial-gradient or SVG pattern.
+- [ ] **Header Text Shadow** – Add a subtle text shadow to the main H1 heading for better separation from background.
 
 ---
 
 ## Phase 3 – Typography & Hierarchy
 
-- [x] **Increase Body Line-Height** – Increase line-height from 1.5 to 1.6-1.7 for better readability in all paragraph text.
-- [x] **Label Letter-Spacing** – Add subtle letter-spacing (0.02-0.04em) to uppercase labels and badges for elegance.
-- [x] **Heading Size Adjustment** – Increase main H1 font-size slightly (28px → 32px) and improve weight contrast with subtext.
-- [x] **Result Number Typography** – Enhance the big-number in results with better font-weight and potentially a slight letter-spacing for premium feel.
+- [ ] **Increase Body Line-Height** – Increase line-height from 1.5 to 1.6-1.7 for better readability in all paragraph text.
+- [ ] **Label Letter-Spacing** – Add subtle letter-spacing (0.02-0.04em) to uppercase labels and badges for elegance.
+- [ ] **Heading Size Adjustment** – Increase main H1 font-size slightly (28px to 32px) and improve weight contrast with subtext.
+- [ ] **Result Number Typography** – Enhance the big-number in results with better font-weight and potentially a slight letter-spacing for premium feel.
 
 ---
 
 ## Phase 4 – Form Element Enhancements
 
-- [x] **Range Slider Glow** – Add a subtle glow effect to range slider track and thumb on hover/drag states using `box-shadow` and `filter`.
-- [x] **Button Toggle Animations** – Add a subtle scale transform (scale: 0.98) on button toggle click for tactile feedback.
-- [x] **Toggle Selected State** – Enhance selected button state with a soft shadow and subtle border glow.
-- [x] **Input Field Icons** – Add SVG icons inside input fields:
+- [ ] **Range Slider Glow** – Add a subtle glow effect to range slider track and thumb on hover/drag states using `box-shadow` and `filter`.
+- [ ] **Button Toggle Animations** – Add a subtle scale transform (scale: 0.98) on button toggle click for tactile feedback.
+- [ ] **Toggle Selected State** – Enhance selected button state with a soft shadow and subtle border glow.
+- [ ] **Input Field Icons** – Add SVG icons inside input fields:
   - Name field: Person/user icon
   - PLZ field: Location/map pin icon
   - Phone field: Phone icon
   - Email field: Mail/envelope icon
-- [x] **Input Focus Glow** – Replace simple border color change on focus with a soft glow effect using `box-shadow` matching the focus color.
-- [x] **Checkbox Custom Styling** – Replace default checkbox with custom styled checkbox featuring smooth animation and checkmark.
+- [ ] **Input Focus Glow** – Replace simple border color change on focus with a soft glow effect using `box-shadow` matching the focus color.
+- [ ] **Checkbox Custom Styling** – Replace default checkbox with custom styled checkbox featuring smooth animation and checkmark.
 
 ---
 
 ## Phase 5 – Color Palette Refinement
 
-- [x] **Softer Gradients** – Reduce saturation of current gradients for a more sophisticated, muted palette. Adjust body gradient from strong colors to subtle tones.
-- [x] **Secondary Accent Color** – Introduce a secondary accent color (soft teal or purple) for variety in UI elements (e.g., success states, secondary buttons).
-- [x] **Layered Shadows** – Replace single shadows with layered shadows for realistic depth:
+- [ ] **Softer Gradients** – Reduce saturation of current gradients for a more sophisticated, muted palette. Adjust body gradient from strong colors to subtle tones.
+- [ ] **Secondary Accent Color** – Introduce a secondary accent color (soft teal or purple) for variety in UI elements (e.g., success states, secondary buttons).
+- [ ] **Layered Shadows** – Replace single shadows with layered shadows for realistic depth:
   ```css
   box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.12);
   ```
-- [x] **Subtle Card Border** – Add a very light border (1px, rgba(0,0,0,0.06)) to the main card for better definition against background.
+- [ ] **Subtle Card Border** – Add a very light border (1px, rgba(0,0,0,0.06)) to the main card for better definition against background.
 
 ---
 
 ## Phase 6 – Layout & Spacing
 
-- [x] **Increase Section Whitespace** – Add more vertical spacing between form fields (24px → 28-32px) for better breathing room.
-- [x] **Subtle Field Dividers** – Add subtle horizontal dividers (1px solid var(--border)) between form field groups instead of just spacing.
-- [x] **Increase Card Padding** – Increase main card padding from 36-40px to 44-48px for a more premium feel.
-- [x] **Trust Row Spacing** – Improve spacing between trust items for better visual balance (20px → 24-28px gap).
+- [ ] **Increase Section Whitespace** – Add more vertical spacing between form fields (24px to 28-32px) for better breathing room.
+- [ ] **Subtle Field Dividers** – Add subtle horizontal dividers (1px solid var(--border)) between form field groups instead of just spacing.
+- [ ] **Increase Card Padding** – Increase main card padding from 36-40px to 44-48px for a more premium feel.
+- [ ] **Trust Row Spacing** – Improve spacing between trust items for better visual balance (20px to 24-28px gap).
 
 ---
 
 ## Phase 7 – Result Section Enhancements
 
-- [x] **Celebration Animation** – Add a subtle confetti or particle celebration animation when results appear using CSS or lightweight JS.
-- [x] **Result Card Icons** – Add SVG icons to each result card:
+- [ ] **Celebration Animation** – Add a subtle confetti or particle celebration animation when results appear using CSS or lightweight JS.
+- [ ] **Result Card Icons** – Add SVG icons to each result card:
   - Ersparnis: Euro/coin icon
   - Anlagengröße: Solar panel icon
-  - CO₂: Leaf/eco icon
+  - CO2: Leaf/eco icon
   - Amortisation: Clock/time icon
   - Förderung: Gift/star icon
 - [ ] **Progress Ring** – Add a circular progress indicator around the main savings number showing percentage of potential maximum.
-- [x] **Staggered Card Animation** – Animate result cards with a staggered delay (cascading effect) when results appear.
-- [x] **Result Card Hover Effects** – Add subtle lift and shadow enhancement on hover for result cards.
+- [ ] **Staggered Card Animation** – Animate result cards with a staggered delay (cascading effect) when results appear.
+- [ ] **Result Card Hover Effects** – Add subtle lift and shadow enhancement on hover for result cards.
 
 ---
 
 ## Phase 8 – Trust Indicators & Footer
 
-- [x] **Replace Emoji Icons** – Replace all emoji icons (🔒, 🆓, 🚫) with professional SVG icons (Lucide or Heroicons style).
-- [x] **Trust Row Background** – Add a subtle gradient or pattern to the trust row background instead of flat fog color.
-- [x] **Footer Link Styling** – Improve Impressum/Datenschutz links with better hover states and subtle underlines.
+- [ ] **Replace Emoji Icons** – Replace all emoji icons (lock, free, no-cost) with professional SVG icons (Lucide or Heroicons style).
+- [ ] **Trust Row Background** – Add a subtle gradient or pattern to the trust row background instead of flat fog color.
+- [ ] **Footer Link Styling** – Improve Impressum/Datenschutz links with better hover states and subtle underlines.
 
 ---
 
 ## Phase 9 – Animations & Micro-interactions
 
-- [x] **Smooth Step Transitions** – Enhance step transitions with slide or fade animations combined with subtle scale effects.
-- [x] **Button Hover Effects** – Add lift (translateY -2px) and enhanced shadow on button hover.
-- [x] **Input Focus Animation** – Smooth border color transition (0.3s ease) with subtle glow on focus.
+- [ ] **Smooth Step Transitions** – Enhance step transitions with slide or fade animations combined with subtle scale effects.
+- [ ] **Button Hover Effects** – Add lift (translateY -2px) and enhanced shadow on button hover.
+- [ ] **Input Focus Animation** – Smooth border color transition (0.3s ease) with subtle glow on focus.
 - [ ] **Loading States** – Add subtle loading spinner or progress indicator when transitioning between steps.
-- [x] **Progress Bar** – Add a thin progress bar at the top of the card showing overall completion percentage.
+- [ ] **Progress Bar** – Add a thin progress bar at the top of the card showing overall completion percentage.
 
 ---
 
 ## Phase 10 – Background & Atmosphere
 
 - [ ] **Floating Particles** – Add subtle floating geometric shapes or particles in the background using CSS animations.
-- [x] **Glassmorphism Effect** – Apply subtle glassmorphism to the main card (backdrop-filter: blur, slight transparency).
-- [x] **Noise Texture Overlay** – Add a very subtle noise texture overlay to the background for a premium, tactile feel.
-- [x] **Subtle Body Gradient** – Make the body gradient more subtle and professional (reduce saturation and contrast).
+- [ ] **Glassmorphism Effect** – Apply subtle glassmorphism to the main card (backdrop-filter: blur, slight transparency).
+- [ ] **Noise Texture Overlay** – Add a very subtle noise texture overlay to the background for a premium, tactile feel.
+- [ ] **Subtle Body Gradient** – Make the body gradient more subtle and professional (reduce saturation and contrast).
 
 ---
 
 ## Phase 11 – Mobile Optimizations
 
-- [x] **Larger Touch Targets** – Increase minimum touch target size for buttons and toggles on mobile (44px minimum height).
-- [x] **Mobile Spacing** – Optimize vertical spacing for comfortable thumb reach on mobile devices.
-- [x] **Mobile Font Sizes** – Adjust font sizes for optimal readability on smaller screens.
+- [ ] **Larger Touch Targets** – Increase minimum touch target size for buttons and toggles on mobile (44px minimum height).
+- [ ] **Mobile Spacing** – Optimize vertical spacing for comfortable thumb reach on mobile devices.
+- [ ] **Mobile Font Sizes** – Adjust font sizes for optimal readability on smaller screens.
 - [ ] **Bottom Sheet Style** – Consider implementing a bottom sheet style for the form on mobile (optional, UX decision).
 
 ---
 
 ## Phase 12 – Accessibility & Professional Polish
 
-- [x] **Focus-Visible Styles** – Add clear focus-visible styles for keyboard navigation (outline or glow).
+- [ ] **Focus-Visible Styles** – Add clear focus-visible styles for keyboard navigation (outline or glow).
 - [ ] **Color Contrast Check** – Verify and improve color contrast ratios where needed for WCAG AA compliance.
-- [x] **ARIA Labels** – Add proper ARIA labels to all interactive elements for screen reader support.
+- [ ] **ARIA Labels** – Add proper ARIA labels to all interactive elements for screen reader support.
 - [ ] **Dark Mode Support** – Implement a sophisticated dark mode palette with CSS custom properties (optional, feature decision).
 - [ ] **Tooltip System** – Add tooltips with icons for complex questions (e.g., Dachausrichtung, Eigenverbrauchsquote).
 
@@ -138,10 +138,10 @@ Use the checkboxes below to track progress as changes are applied. This document
 
 ## Phase 13 – Icon System
 
-- [x] **Icon Library Integration** – Integrate a consistent icon system (Lucide Icons or Heroicons) via CDN or inline SVGs.
-- [x] **Icon Sizing** – Establish consistent icon sizing across the UI (16px, 20px, 24px variants).
-- [x] **Icon Colors** – Define icon color palette matching the design system (primary, secondary, muted).
-- [x] **Icon Animations** – Add subtle animations to icons (hover effects, loading states).
+- [ ] **Icon Library Integration** – Integrate a consistent icon system (Lucide Icons or Heroicons) via CDN or inline SVGs.
+- [ ] **Icon Sizing** – Establish consistent icon sizing across the UI (16px, 20px, 24px variants).
+- [ ] **Icon Colors** – Define icon color palette matching the design system (primary, secondary, muted).
+- [ ] **Icon Animations** – Add subtle animations to icons (hover effects, loading states).
 
 ---
 
