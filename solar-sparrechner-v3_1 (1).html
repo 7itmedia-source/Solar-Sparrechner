@@ -365,6 +365,18 @@
       padding-right: 20px;
     }
   }
+
+  /* Focus-visible styles for accessibility */
+  input:focus-visible,
+  button:focus-visible,
+  .btn-toggle:focus-visible {
+    outline: 2px solid var(--sun);
+    outline-offset: 2px;
+  }
+
+  .btn-toggle.selected:focus-visible {
+    outline-color: var(--leaf);
+  }
 </style>
 </head>
 <body>
@@ -389,6 +401,7 @@
         <label>Wie hoch ist Ihre monatliche Stromrechnung?</label>
         <div class="range-value" id="stromVal">120 €/Monat</div>
         <input type="range" id="strom" min="50" max="500" step="10" value="120"
+          aria-label="Monatliche Stromrechnung in Euro"
           oninput="document.getElementById('stromVal').textContent = this.value + ' €/Monat'; updateStromHint(this.value); checkStromMin(this.value)">
         <p class="hint" id="stromHint">Entspricht ca. 2.400 kWh/Jahr – typisch für 1–2 Personen.</p>
       </div>
@@ -421,6 +434,7 @@
         <label>Wie groß ist Ihre Dachfläche ungefähr?</label>
         <div class="range-value" id="dachVal">60 m²</div>
         <input type="range" id="dachflaeche" min="20" max="200" step="5" value="60"
+          aria-label="Dachfläche in Quadratmetern"
           oninput="document.getElementById('dachVal').textContent = this.value + ' m²'; updateDachHint(this.value)">
         <p class="hint" id="dachHint">Platz für ca. 26 Module → ~12,3 kWp</p>
       </div>
@@ -465,25 +479,28 @@
       </div>
       <div class="field">
         <label>Ihr Name</label>
-        <input type="text" id="fname" placeholder="z. B. Maria Müller">
+        <input type="text" id="fname" placeholder="z. B. Maria Müller" aria-label="Ihr Name">
       </div>
       <div class="field">
         <label>Postleitzahl</label>
-        <input type="text" id="fplz" inputmode="numeric" maxlength="5" placeholder="z. B. 80331">
+        <input type="text" id="fplz" inputmode="numeric" maxlength="5" placeholder="z. B. 80331" aria-label="Postleitzahl">
       </div>
       <div class="field">
         <label>Telefonnummer</label>
-        <input type="tel" id="fphone" placeholder="+49 ...">
+        <input type="tel" id="fphone" placeholder="+49 ..." aria-label="Ihre Telefonnummer">
         <p class="hint">Wir rufen Sie für Ihre kostenlose Erstberatung an.</p>
+        <p id="fphone-error" style="display:none; color:#e05a5a; font-size:12px; margin-top:4px;">
+          Bitte geben Sie eine gültige Telefonnummer ein.
+        </p>
       </div>
       <div class="field">
         <label>E-Mail-Adresse <span style="color:var(--muted); font-weight:400">(optional)</span></label>
-        <input type="email" id="femail" placeholder="ihre@email.de">
+        <input type="email" id="femail" placeholder="ihre@email.de" aria-label="E-Mail-Adresse">
         <p class="hint">Wir senden Ihnen die Auswertung als PDF.</p>
       </div>
       <div class="field">
-        <label style="display:flex; align-items:flex-start; gap:8px;">
-          <input type="checkbox" id="fdsgvo" style="width:auto; margin-top:2px;">
+        <label for="fdsgvo" style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="fdsgvo" style="width:auto; margin-top:2px;" aria-label="Datenschutzerklärung zustimmen">
           <span style="font-size:13px; font-weight:400; color:var(--text);">
             Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#datenschutz" style="color:var(--sky);">Datenschutzerklärung</a> zu und bin einverstanden, dass Energielösung Deutschland mich kontaktiert.
           </span>
@@ -624,25 +641,35 @@ function updateDachHint(val) {
 
 // Count-up animation function
 function countUp(el, end, duration) {
-  const start = 0;
-  const startTime = performance.now();
-  
-  function update(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
+  try {
+    const start = 0;
+    const startTime = performance.now();
     
-    // Easing function for smooth animation
-    const easeOut = 1 - Math.pow(1 - progress, 3);
-    const current = Math.round(start + (end - start) * easeOut);
-    
-    el.textContent = current.toLocaleString('de-DE') + ' €';
-    
-    if (progress < 1) {
-      requestAnimationFrame(update);
+    function update(currentTime) {
+      try {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (end - start) * easeOut);
+        
+        el.textContent = current.toLocaleString('de-DE') + '\u20AC';
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      } catch (err) {
+        console.error('CountUp animation error:', err);
+        el.textContent = end.toLocaleString('de-DE') + '\u20AC';
+      }
     }
+    
+    requestAnimationFrame(update);
+  } catch (err) {
+    console.error('CountUp initialization error:', err);
+    el.textContent = end.toLocaleString('de-DE') + '\u20AC';
   }
-  
-  requestAnimationFrame(update);
 }
 
 // Check if electricity slider is at minimum and show warning
@@ -686,7 +713,7 @@ async function showResult() {
     document.getElementById('fname').focus();
     valid = false;
   } else {
-    document.getElementById('fname').style.borderColor = '';
+    document.getElementById('fname').style.borderColor = '#2D7A4F';
   }
 
   // PLZ validation: exactly 5 digits, range 10000-99999
@@ -696,30 +723,19 @@ async function showResult() {
     if (valid) document.getElementById('fplz').focus();
     valid = false;
   } else {
-    document.getElementById('fplz').style.borderColor = '';
+    document.getElementById('fplz').style.borderColor = '#2D7A4F';
   }
 
   const digits = phone.replace(/[^0-9]/g, '');
   const phoneRegex = /^(\+49|0)[1-9]\d{8,14}$/; // German phone format
   if (digits.length < 10 || !phoneRegex.test(phone)) {
     document.getElementById('fphone').style.borderColor = '#e05a5a';
-    // Add or update error message
-    let errorMsg = document.getElementById('fphone-error');
-    if (!errorMsg) {
-      errorMsg = document.createElement('p');
-      errorMsg.id = 'fphone-error';
-      errorMsg.style.color = '#e05a5a';
-      errorMsg.style.fontSize = '12px';
-      errorMsg.style.marginTop = '4px';
-      document.getElementById('fphone').parentNode.appendChild(errorMsg);
-    }
-    errorMsg.textContent = 'Bitte geben Sie eine gültige Telefonnummer ein.';
+    document.getElementById('fphone-error').style.display = 'block';
     if (valid) document.getElementById('fphone').focus();
     valid = false;
   } else {
-    document.getElementById('fphone').style.borderColor = '';
-    const errorMsg = document.getElementById('fphone-error');
-    if (errorMsg) errorMsg.remove();
+    document.getElementById('fphone').style.borderColor = '#2D7A4F';
+    document.getElementById('fphone-error').style.display = 'none';
   }
 
   if (!valid) return;
@@ -817,7 +833,7 @@ async function showResult() {
     anzahl_module:      anzahlModule,
     amortisation_jahre: amort,
     co2_einsparung_t:   co2,
-    kfw_foerderkredit:  foerder,
+    kfw_foerderkredit:  foerderText,
 
     // Meta Ad Tracking
     utm_source:   UTM.source,
